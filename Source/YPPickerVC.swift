@@ -12,11 +12,9 @@ import Stevia
 public class YPPickerVC: YPBottomPager, YPBottomPagerDelegate {
     
     let albumsManager = YPAlbumsManager()
-    var shouldHideStatusBar = false
-    var initialStatusBarHidden = false
     
     override public var prefersStatusBarHidden: Bool {
-        return (shouldHideStatusBar || initialStatusBarHidden) && YPConfig.hidesStatusBar
+        return YPConfig.hidesStatusBar
     }
     
     /// Private callbacks to YPImagePicker
@@ -117,15 +115,7 @@ public class YPPickerVC: YPBottomPager, YPBottomPagerDelegate {
         super.viewWillAppear(animated)
         cameraVC?.v.shotButton.isEnabled = true
     }
-    
-    public override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        shouldHideStatusBar = true
-        initialStatusBarHidden = true
-        UIView.animate(withDuration: 0.3) {
-            self.setNeedsStatusBarAppearanceUpdate()
-        }
-    }
+
     
     internal func pagerScrollViewDidScroll(_ scrollView: UIScrollView) { }
     
@@ -185,7 +175,6 @@ public class YPPickerVC: YPBottomPager, YPBottomPagerDelegate {
     
     public override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        shouldHideStatusBar = false
         stopAll()
     }
     
